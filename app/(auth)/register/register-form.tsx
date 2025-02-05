@@ -2,10 +2,14 @@
 
 import { useTransition } from "react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { signup } from "../actions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Icons } from "@/components/ui/icons";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -14,10 +18,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { signup } from "../actions";
 
 const signupSchema = z.object({
   name: z

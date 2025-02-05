@@ -1,10 +1,15 @@
 "use client";
 
 import { useTransition } from "react";
+import Link from "next/link";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { login } from "../actions";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
-import Link from "next/link";
 import {
   Form,
   FormControl,
@@ -13,11 +18,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { login } from "../actions";
 
 const loginSchema = z.object({
   email: z
