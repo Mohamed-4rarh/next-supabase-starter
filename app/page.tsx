@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import UserAuthState from "@/components/user-auth-state";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen mx-auto">
+      <header className="container mx-auto p-4 flex items-center justify-between">
+        <h1 className="font-bold text-2xl">Next.js + Supabase Starter</h1>
+        <UserAuthState />
+      </header>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
           <div className="container px-4 md:px-6 mx-auto">
@@ -50,8 +55,7 @@ export default function Home() {
                   strokeWidth="2"
                   viewBox="0 0 24 24"
                   width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                  xmlns="http://www.w3.org/2000/svg">
                   <path d="M20 7h-9" />
                   <path d="M14 17H5" />
                   <circle cx="17" cy="17" r="3" />
@@ -73,8 +77,7 @@ export default function Home() {
                   strokeWidth="2"
                   viewBox="0 0 24 24"
                   width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                  xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
                   <path d="m9 12 2 2 4-4" />
                 </svg>
@@ -94,8 +97,7 @@ export default function Home() {
                   strokeWidth="2"
                   viewBox="0 0 24 24"
                   width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                  xmlns="http://www.w3.org/2000/svg">
                   <ellipse cx="12" cy="5" rx="9" ry="3" />
                   <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
                   <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />

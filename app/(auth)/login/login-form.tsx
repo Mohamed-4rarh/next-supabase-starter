@@ -18,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const loginSchema = z.object({
   email: z
@@ -32,6 +33,9 @@ const loginSchema = z.object({
 
 export default function LoginForm() {
   const [isPending, startTransition] = useTransition();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const redirectTo = searchParams.get("redirect") || "/";
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -45,6 +49,7 @@ export default function LoginForm() {
     startTransition(async () => {
       try {
         await login(values);
+        router.push(redirectTo);
       } catch (error) {
         console.log("verifing error: ", error);
       }
