@@ -5,7 +5,8 @@ import Link from "next/link";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { login } from "../actions";
-
+import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useRouter, useSearchParams } from "next/navigation";
 
 const loginSchema = z.object({
   email: z
@@ -35,6 +35,7 @@ export default function LoginForm() {
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const redirectTo = searchParams.get("redirect") || "/";
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -49,6 +50,7 @@ export default function LoginForm() {
     startTransition(async () => {
       try {
         await login(values);
+        queryClient.invalidateQueries({ queryKey: ["user"] }); //invalidate the user
         router.push(redirectTo);
       } catch (error) {
         console.log("verifing error: ", error);
