@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/supabase/server";
 
+//sign up with email and password
 export async function signup(formData: {
   name: string;
   email: string;
@@ -30,6 +31,7 @@ export async function signup(formData: {
   redirect("/");
 }
 
+//login with email and password
 export async function login(formData: { email: string; password: string }) {
   const supabase = await createClient();
 
@@ -43,9 +45,9 @@ export async function login(formData: { email: string; password: string }) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/dashboard");
 }
 
+//logout and remove user
 export async function logOut() {
   const supabase = await createClient();
   console.log("logging out the user...");

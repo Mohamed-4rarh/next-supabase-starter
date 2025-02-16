@@ -17,22 +17,21 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { logOut } from "@/app/(auth)/actions";
 import { Icons } from "@/components/ui/icons"; // Import spinner icon
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function UserAuthState() {
   const { user } = useAuth();
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-
-  useEffect(() => {
-    console.log("user changed: ", user);
-  }, [user]);
+  const queryClient = useQueryClient();
 
   async function removeUser() {
-    setIsLoggingOut(true); // ✅ Show loading
+    setIsLoggingOut(true);
     await logOut();
-    setIsLoggingOut(false); // ✅ Hide loading
-    router.refresh(); // ✅ Force UI update
-    console.log("user after logout: ", user);
+    setIsLoggingOut(false);
+
+    queryClient.invalidateQueries({ queryKey: ["user"] });
+    router.refresh();
   }
 
   return (
