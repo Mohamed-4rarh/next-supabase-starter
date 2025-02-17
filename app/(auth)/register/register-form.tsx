@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { PasswordInput } from "@/components/ui/password-input";
 
 const signupSchema = z.object({
   name: z
@@ -62,22 +63,12 @@ export default function RegisterForm() {
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
     startTransition(async () => {
-      try {
-        await signup(values);
-        toast({
-          title: "Successfully Registered!",
-          description:
-            "Your need to activate you mail, check your inbox for activation link.",
-        });
-      } catch (error) {
-        console.log("signing up error: ", error);
-        toast({
-          title: "Uh oh! Something went wrong.",
-          description:
-            "There was a problem creating your account, try again later",
-          variant: "destructive",
-        });
-      }
+      await signup(values);
+      toast({
+        title: "Successfully Registered!",
+        description:
+          "You need to activate you mail, check your inbox for activation link.",
+      });
     });
   }
   return (
@@ -149,7 +140,7 @@ export default function RegisterForm() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
+                      <PasswordInput
                         placeholder="password"
                         type="password"
                         {...field}
