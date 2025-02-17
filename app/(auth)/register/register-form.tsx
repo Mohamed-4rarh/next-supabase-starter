@@ -18,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
 
 const signupSchema = z.object({
   name: z
@@ -47,6 +48,7 @@ const signupSchema = z.object({
 
 export default function RegisterForm() {
   const [isPending, startTransition] = useTransition();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -62,8 +64,19 @@ export default function RegisterForm() {
     startTransition(async () => {
       try {
         await signup(values);
+        toast({
+          title: "Successfully Registered!",
+          description:
+            "Your need to activate you mail, check your inbox for activation link.",
+        });
       } catch (error) {
         console.log("signing up error: ", error);
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description:
+            "There was a problem creating your account, try again later",
+          variant: "destructive",
+        });
       }
     });
   }
