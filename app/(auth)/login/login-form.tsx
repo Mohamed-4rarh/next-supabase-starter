@@ -19,8 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z
@@ -37,7 +37,6 @@ export default function LoginForm() {
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const redirectTo = searchParams.get("redirect") || "/";
 
@@ -55,17 +54,10 @@ export default function LoginForm() {
         await login(values);
         queryClient.invalidateQueries({ queryKey: ["user"] }); //invalidate the user
         router.push(redirectTo);
-        toast({
-          title: "Signed In Successfuly!",
-          description: "Welcome back to your Space!",
-        });
+        toast.success("Welcome Back!");
       } catch (error) {
         console.log("verifing error: ", error);
-        toast({
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your credintials",
-          variant: "destructive",
-        });
+        toast.error("Something went wrong with your creditials!");
       }
     });
   }
