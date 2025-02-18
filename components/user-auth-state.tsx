@@ -4,7 +4,6 @@ import { useAuth } from "@/lib/auth-context";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 import {
   DropdownMenu,
@@ -18,10 +17,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { logOut } from "@/app/(auth)/actions";
 import { Icons } from "@/components/ui/icons"; // Import spinner icon
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export default function UserAuthState() {
   const { user } = useAuth();
-  const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const queryClient = useQueryClient();
 
@@ -31,7 +30,7 @@ export default function UserAuthState() {
     setIsLoggingOut(false);
 
     queryClient.invalidateQueries({ queryKey: ["user"] });
-    router.refresh();
+    toast.success("you're Logged Out!");
   }
 
   return (

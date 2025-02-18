@@ -8,6 +8,7 @@ const supabase = createClient();
 export function useClientFetch<T>(
   key: string,
   table: string,
+  cache?: number,
   filters?: (query: any) => any
 ) {
   return useQuery<T[]>({
@@ -21,5 +22,6 @@ export function useClientFetch<T>(
 
       return data as T[];
     },
+    staleTime: cache ? cache : 0, //cache time if provided | 0 is no cache
   });
 }

@@ -18,8 +18,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
 import { PasswordInput } from "@/components/ui/password-input";
+import { toast } from "sonner";
 
 const signupSchema = z.object({
   name: z
@@ -49,7 +49,6 @@ const signupSchema = z.object({
 
 export default function RegisterForm() {
   const [isPending, startTransition] = useTransition();
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -64,11 +63,7 @@ export default function RegisterForm() {
   async function onSubmit(values: z.infer<typeof signupSchema>) {
     startTransition(async () => {
       await signup(values);
-      toast({
-        title: "Successfully Registered!",
-        description:
-          "You need to activate you mail, check your inbox for activation link.",
-      });
+      toast.success("Just step away! check your inbox for activation link.");
     });
   }
   return (
