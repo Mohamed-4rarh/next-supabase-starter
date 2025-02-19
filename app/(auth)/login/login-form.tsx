@@ -50,15 +50,16 @@ export default function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     startTransition(async () => {
-      try {
-        await login(values);
-        queryClient.invalidateQueries({ queryKey: ["user"] }); //invalidate the user
-        router.push(redirectTo);
-        toast.success("Welcome Back!");
-      } catch (error) {
-        console.log("verifing error: ", error);
+      const response = await login(values);
+
+      if (response.error) {
         toast.error("Something went wrong with your creditials!");
+        return;
       }
+
+      queryClient.invalidateQueries({ queryKey: ["user"] }); //invalidate the user
+      router.push(redirectTo);
+      toast.success("Welcome Back!");
     });
   }
 

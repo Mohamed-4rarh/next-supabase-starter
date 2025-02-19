@@ -1,8 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-
 import { createClient } from "@/supabase/server";
 
 //sign up with email and password
@@ -14,49 +11,48 @@ export async function signup(formData: {
 }) {
   const supabase = await createClient();
 
-  const data = {
-    name: formData.name as string,
+  const { data, error } = await supabase.auth.signUp({
     email: formData.email as string,
-    phone: formData.phone as string,
     password: formData.password as string,
-  };
-
-  const { error } = await supabase.auth.signUp(data);
+    options: {
+      data: {
+        full_name: formData.name as string,
+        phone: formData.phone as string,
+      },
+    },
+  });
 
   if (error) {
-    redirect("/error");
+    return { error: error.message };
   }
 
-  revalidatePath("/", "layout");
-  redirect("/");
+  return { user: data.user, session: data.session };
 }
 
 //login with email and password
 export async function login(formData: { email: string; password: string }) {
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: formData.email as string,
-    password: formData.password as string,
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: formData.email,
+    password: formData.password,
   });
 
   if (error) {
-    redirect("/error");
+    return { error: error.message };
   }
 
-  revalidatePath("/", "layout");
+  return { user: data.user, session: data.session };
 }
 
 //logout and remove user
 export async function logOut() {
   const supabase = await createClient();
-  console.log("logging out the user...");
   const { error } = await supabase.auth.signOut();
 
   if (error) {
-    console.log("error while logout: ", error.message);
+    return { error: error.message };
   }
-  console.log("successfully logged out...");
 
-  revalidatePath("/", "layout");
+  return;
 }

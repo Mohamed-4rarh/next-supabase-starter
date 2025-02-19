@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { PasswordInput } from "@/components/ui/password-input";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const signupSchema = z.object({
   name: z
@@ -49,6 +50,7 @@ const signupSchema = z.object({
 
 export default function RegisterForm() {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -62,8 +64,17 @@ export default function RegisterForm() {
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
     startTransition(async () => {
-      await signup(values);
-      toast.success("Just step away! check your inbox for activation link.");
+      const response = await signup(values);
+
+      if (response.error) {
+        toast.error(
+          "Something went wrong with your credintials! try again later."
+        );
+        return;
+      }
+
+      toast.success("Just a step away! check your inbox for activation link.");
+      router.push("/");
     });
   }
   return (

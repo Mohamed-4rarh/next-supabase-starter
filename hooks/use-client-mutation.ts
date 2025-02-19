@@ -36,5 +36,19 @@ export function useClientMutate(
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [table], exact: false });
     },
+    onMutate: async (newData: object) => {
+      await queryClient.cancelQueries({ queryKey: [table] });
+      const currentData = queryClient.getQueryData([table]);
+      queryClient.setQueryData([table], (dataBeforeMutate: any) => [
+        ...dataBeforeMutate,
+        { id: Date.now(), ...newData },
+      ]);
+
+      return { currentData };
+    },
+
+    onError: (error, newData, context) => {
+      queryClient.setQueryData([table], context?.currentData);
+    },
   });
 }

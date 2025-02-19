@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/lib/auth-context";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
@@ -21,25 +21,28 @@ import { toast } from "sonner";
 
 export default function UserAuthState() {
   const { user } = useAuth();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isPending, startTransision] = useTransition();
   const queryClient = useQueryClient();
 
   async function removeUser() {
-    setIsLoggingOut(true);
-    await logOut();
-    setIsLoggingOut(false);
-
-    queryClient.invalidateQueries({ queryKey: ["user"] });
-    toast.success("you're Logged Out!");
+    startTransision(async () => {
+      const response = await logOut();
+      if (response?.error) {
+        toast.error("Oops Something went wrong!");
+        return;
+      }
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      toast.success("you're Logged Out!");
+    });
   }
 
   return (
     <div className="flex items-center gap-4">
       {user ? (
         <DropdownMenu>
-          <DropdownMenuTrigger disabled={isLoggingOut}>
+          <DropdownMenuTrigger disabled={isPending}>
             <Avatar className="relative">
-              {isLoggingOut && (
+              {isPending && (
                 <div className="absolute top-0 right-0 w-full h-full flex items-center justify-center bg-slate-400">
                   <Icons.spinner className="h-4 w-4 animate-spin" />
                 </div>
@@ -61,8 +64,8 @@ export default function UserAuthState() {
               <Link href={"/dashboard"}>Dashboard</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <button onClick={removeUser} disabled={isLoggingOut}>
-                {isLoggingOut ? (
+              <button onClick={removeUser} disabled={isPending}>
+                {isPending ? (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                   "Log Out"
@@ -73,8 +76,8 @@ export default function UserAuthState() {
         </DropdownMenu>
       ) : (
         <Link href={"/login"}>
-          <Button disabled={isLoggingOut}>
-            {isLoggingOut ? (
+          <Button disabled={isPending}>
+            {isPending ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
               "Verify Now"
