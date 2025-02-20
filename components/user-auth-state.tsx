@@ -59,7 +59,6 @@ export default function UserAuthState() {
           <DropdownMenuContent>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>
               <Link href={"/dashboard"}>Dashboard</Link>
             </DropdownMenuItem>
