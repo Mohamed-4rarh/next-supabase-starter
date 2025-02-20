@@ -305,7 +305,7 @@ export default function Home() {
                   </code>
                 </li>
                 <li>
-                  Install dependencies using pnpm if it's skipped:
+                  Install dependencies using pnpm if it&#39;s skipped:
                   <code className="bg-gray-100 dark:bg-gray-800 p-1 rounded block">
                     pnpm install
                   </code>

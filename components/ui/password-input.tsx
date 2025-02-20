@@ -6,8 +6,8 @@ import { Eye, EyeOff } from "lucide-react";
 const PasswordInput = React.forwardRef<
   HTMLInputElement,
   React.ComponentProps<"input">
->(({ className, type, ...props }, ref) => {
-  const [showPassword, setShowPassword] = React.useState<Boolean>(false);
+>(({ className, ...props }, ref) => {
+  const [showPassword, setShowPassword] = React.useState<boolean>(false);
   return (
     <div className="flex h-9 items-center justify-between gap-1 rounded-md border border-input bg-transparent px-3 py-1 shadow-sm transition-colors">
       <input
