@@ -23,7 +23,7 @@ export default function Home() {
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
                   Jumpstart your full-stack project with Next.js and Supabase.
                   Authentication, database, and API routes - all set up and
-                  ready to go!
+                  ready to go! <br /> best for e-commerce, SaaS, Dashboards.
                 </p>
               </div>
               <div className="space-x-4">
