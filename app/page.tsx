@@ -1,4 +1,4 @@
-import { BookOpenText, Github } from "lucide-react";
+import { BookOpenText, Github, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import UserAuthState from "@/components/user-auth-state";
 import Link from "next/link";
@@ -10,7 +10,15 @@ export default function Home() {
     <div className="flex flex-col min-h-screen mx-auto">
       <header className="container mx-auto p-4 flex items-center justify-between">
         <h1 className="font-bold text-2xl">Next.js + Supabase Starter</h1>
-        <UserAuthState />
+        <div className="flex items-center gap-4">
+          <Button variant="outline" asChild>
+            <Link href="https://www.npmjs.com/package/create-next-supabase-starter?activeTab=readme">
+              <Package className="mr-2 h-4 w-4" />
+              NPM Package
+            </Link>
+          </Button>
+          <UserAuthState />
+        </div>
       </header>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
